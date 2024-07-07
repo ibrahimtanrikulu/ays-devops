@@ -1,0 +1,34 @@
+# Local .terraform directories
+**/.terraform/*
+
+# .tfstate files
+*.tfstate
+*.tfstate.*
+
+# Crash log files
+crash.log
+crash.*
+
+# Ignore override files as they are usually used to override resources locally.
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# Ignore any .tfvars files that are used to store sensitive variables
+*.tfvars
+*.tfvars.json
+
+# Ignore the CLI configuration file
+.terraformrc
+terraform.rc
+
+# Ignore generated plan files
+*.tfplan
+
+# Ignore .terraform.lock.hcl file (if you're using Terraform 0.14+ and want to manage the lock file in version control, remove this line)
+.terraform.lock.hcl
+
+# Ignore environment variables for Terraform
+.env
+.env.*
