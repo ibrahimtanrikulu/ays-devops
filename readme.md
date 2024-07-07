@@ -33,6 +33,7 @@ In the event of a disaster, timely deployment of services is critical. This repo
 
 **2. Configure AWS Credentials**:
 Ensure your AWS credentials are set up. You can configure them using the AWS CLI:
+**important**: profile must be set as ays
 
    ```sh
    aws configure --profile ays
@@ -50,3 +51,27 @@ Apply the configuration to provision the necessary infrastructure:
    ```sh
    terraform apply
    ```
+
+
+
+
+**Useful commands**
+- 
+
+
+**Destroy all resources**:
+Destroy all resources deployed with commands above:
+   ```sh
+   terraform destroy
+   ```
+
+**Show all resources**:
+Show all resources deployed with commands above:
+   ```sh
+   terraform show
+   ```
+**Format files**:
+In working directory format terraform files:
+   ```sh
+   terraform fmt --recursive
+   ```   
