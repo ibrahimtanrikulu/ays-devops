@@ -1,0 +1,14 @@
+# Ignore terraform directories and files
+**/.terraform/*
+*.tfstate
+*.tfstate.backup
+*.lock.hcl
+
+# Ignore system files
+.DS_Store
+
+# Ignore VSCode settings folder
+.vscode/
+
+# Ignore git related files
+.git/
