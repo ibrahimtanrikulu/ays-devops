@@ -1,39 +1,53 @@
-# ./modules/secretsmanager/main.tf
-
-resource "random_password" "db_password" {
-  length  = 32
-  special = false
-}
-resource "random_string" "suffix" {
-  length  = 8
-  special = false
-  upper   = false
+# Configure the AWS provider
+provider "aws" {
+  region  = var.region
+  profile = var.profile
 }
 
-resource "aws_secretsmanager_secret" "db_credentials" {
-  name = "db_master_credentials_${random_string.suffix.result}"
+# Retrieve the secret metadata
+data "aws_secretsmanager_secret" "example" {
+  arn = "arn:aws:secretsmanager:eu-central-1:962231853120:secret:ays-database/production/mysql-jOfXoM"
 }
 
-resource "aws_secretsmanager_secret_version" "db_credentials_version" {
-  secret_id = aws_secretsmanager_secret.db_credentials.id
-  secret_string = jsonencode({
-    username = "aysroot"
-    password = random_password.db_password.result
-  })
+# Retrieve the secret value
+data "aws_secretsmanager_secret_version" "example" {
+  secret_id = data.aws_secretsmanager_secret.example.id
+  # version_stage = "AWSCURRENT"  # Optional, default is AWSCURRENT
 }
 
-output "db_username" {
-  value = "aysroot"
+# Output the secret values
+output "secret_values" {
+  value     = jsondecode(data.aws_secretsmanager_secret_version.example.secret_string)
+  sensitive = true # Mark the output as sensitive to hide it in the output
 }
 
-output "db_password" {
-  value = random_password.db_password.result
+# Output individual secret values
+output "username" {
+  value     = jsondecode(data.aws_secretsmanager_secret_version.example.secret_string)["username"]
+  sensitive = true
 }
 
-output "secret_arn" {
-  value = aws_secretsmanager_secret.db_credentials.arn
+output "password" {
+  value     = jsondecode(data.aws_secretsmanager_secret_version.example.secret_string)["password"]
+  sensitive = true
 }
 
-output "secret_version" {
-  value = aws_secretsmanager_secret_version.db_credentials_version.version_id
+output "engine" {
+  value     = jsondecode(data.aws_secretsmanager_secret_version.example.secret_string)["engine"]
+  sensitive = true
+}
+
+output "host" {
+  value     = jsondecode(data.aws_secretsmanager_secret_version.example.secret_string)["host"]
+  sensitive = true
+}
+
+output "port" {
+  value     = jsondecode(data.aws_secretsmanager_secret_version.example.secret_string)["port"]
+  sensitive = true
+}
+
+output "db_instance_identifier" {
+  value     = jsondecode(data.aws_secretsmanager_secret_version.example.secret_string)["dbInstanceIdentifier"]
+  sensitive = true
 }

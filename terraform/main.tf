@@ -6,13 +6,16 @@ provider "aws" {
 data "aws_availability_zones" "available" {}
 
 
-module "vpc" {
-  source = "./modules/vpc"
-}
+# module "vpc" {
+#   source = "./modules/vpc"
+# }
 
 module "secretsmanager" {
-  source = "./modules/secretsmanager"
+  source  = "./modules/secretsmanager"
+  profile = var.profile
+  region = var.region
 }
+
 
 module "db" {
   source             = "./modules/db"

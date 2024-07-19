@@ -8,9 +8,9 @@ provider "aws" {
 
 # Create the Aurora DB cluster
 resource "aws_rds_cluster" "aurora" {
-  cluster_identifier        = "aurora-cluster"
-  engine                    = "aurora-mysql"
-  engine_version            = var.engine_version
+  cluster_identifier = "aurora-cluster"
+  engine             = "aurora-mysql"
+  engine_version     = var.engine_version
   # engine_mode               = "serverless" #["global" "multimaster" "parallelquery" "provisioned" "serverless"]
   master_username           = var.master_username
   master_password           = var.master_password
