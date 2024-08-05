@@ -4,11 +4,45 @@ provider "aws" {
   region  = var.region
   profile = var.profile
 }
+variable "region" {
+  description = "The AWS region to deploy the resources in"
+  type        = string
+}
+
+variable "profile" {
+  description = "The AWS profile to use for the provider"
+  type        = string
+}
+
+variable "ecs_task_role_arn" {
+  description = "The ID of the VPC where the ECS cluster will be created"
+  type        = string
+}
+
+variable "ecs_service_role_arn" {
+  description = "The ID of the VPC where the ECS cluster will be created"
+  type        = string
+}
+variable "vpc_id" {
+  description = "The ID of the VPC where the ECS cluster will be created"
+  type        = string
+}
+
+variable "public_subnets" {
+  description = "The public subnets where the ECS resources will be created"
+  type        = list(string)
+}
+
+
+variable "secretmanager_arn" {
+  description = "secretmanager_arn to be used as env variable in container config"
+  type        = string
+}
 
 # Create an ECS cluster
 resource "aws_ecs_cluster" "main" {
   provider = aws.ecs
-  name     = "main-ecs-cluster"
+  name     = "ays-ecs-cluster"
 }
 
 # Create a security group for ECS
@@ -25,6 +59,19 @@ resource "aws_security_group" "ecs" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
+  ingress {
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    from_port   = 9790
+    to_port     = 9790
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
   egress {
     from_port   = 0
     to_port     = 0
@@ -33,7 +80,7 @@ resource "aws_security_group" "ecs" {
   }
 
   tags = {
-    Name = "ecs-sg"
+    Name = "ecs-task-sg"
   }
 }
 
@@ -63,7 +110,6 @@ resource "aws_iam_role_policy_attachment" "ecs_task_execution_policy" {
   policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
 }
 
-# Create an Application Load Balancer
 resource "aws_lb" "main" {
   provider        = aws.ecs
   name            = "main-alb"

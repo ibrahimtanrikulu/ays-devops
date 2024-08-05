@@ -6,6 +6,12 @@ provider "aws" {
 data "aws_availability_zones" "available" {}
 
 
+# module "iam" {
+#   source         = "./modules/iam"
+#   profile        = var.profile
+# }
+
+
 module "vpc" {
   source = "./modules/vpc"
 }
@@ -33,7 +39,11 @@ module "db" {
 #   profile        = var.profile
 #   vpc_id         = module.network.vpc_id
 #   public_subnets = module.network.public_subnets
+#   secretmanager_arn = module.secretsmanager.secret_arn
+#   ecs_task_role_arn = module.iam.ecs_task_role_arn
+#   ecs_service_role_arn = module.iam.ecs_service_role_arn
 # }
+
 
 # output "vpc_id" {
 #   value = module.network.vpc_id

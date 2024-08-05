@@ -15,3 +15,14 @@ variable "engine_version" {
   type        = string
   default     = "8.0.mysql_aurora.3.04.1"
 }
+variable "ecs_service_role_name" {
+  description = "ecs-service-role tag"
+  type        = string
+  default     = "ecsServiceRole"
+}
+
+variable "ecs_task_role_name" {
+  description = "ecs-task-role tag"
+  type        = string
+  default     = "ecsTaskRole"
+}
